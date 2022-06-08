@@ -1,20 +1,29 @@
 const express = require('express')
-const mongoose = require('mongoose')
-const morgan = require('morgan')
 const bodyParser = require('body-parser')
+const cors = require('cors')
+const mongoose = require('mongoose');
+const Product = require('./model/Product')
 
-mongoose.connect('mongodb://localhost:27017/testdb')
-const db = mongoose.connection
-
-db.on('error', (err) => {
-    console.log(err)
-})
-
-db.once('open', () => {
-    console.log('Database Connection Established!')
-})
 const app = express()
-const port = 3001
-app.get('/tin-tuc', (req, res) => res.send('Hello World'))
 
-app.listen(port, () => console.log(`Example app listening at https://localhost:${port}`))
+app.use(bodyParser.json())
+app.use(cors())
+
+const db = require('./api')
+db.connect()
+
+// app.use('/api/posts', posts)
+const port = 3000
+app.get('/', (req, res) => (
+
+    Product.find({}, function(err, products) {
+        if (!err) {
+            res.json(products)
+        } else {
+            res.status(400).json({ error: "ERROR!!"})
+        }
+    })
+
+))
+
+app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
