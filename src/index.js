@@ -1,29 +1,21 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const mongoose = require('mongoose');
-const Product = require('./model/Product')
+const db = require('./routes/api')
 
+db.connect()
 const app = express()
 
 app.use(bodyParser.json())
 app.use(cors())
 
-const db = require('./api')
-db.connect()
+const user = require('./routes/api/user')
+app.use('/api/user', user)
 
-// app.use('/api/posts', posts)
-const port = 3000
-app.get('/', (req, res) => (
+const product = require('./routes/api/product')
+app.use('/api/product', product)
 
-    Product.find({}, function(err, products) {
-        if (!err) {
-            res.json(products)
-        } else {
-            res.status(400).json({ error: "ERROR!!"})
-        }
-    })
+const port = 3001
 
-))
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
