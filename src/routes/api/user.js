@@ -12,13 +12,29 @@ router.get('/', (req, res) => {
     })
 })
 
+//Get 1 user
+router.get('/:id', (req, res) => {
+    const { id } = req.params 
+    User.findOne({
+        _id: id
+    }, (err, user) => {
+        try {
+            res.json({
+                status: 200,
+                user: user
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    })
+})
+
 //POST
-
-
 router.put('/:id', (req, res) => {
     const { id } = req.params
     const data = req.body
     if (data.bills) {
+        // Update bills' user
         User.updateOne({
             _id: id
         }, {
@@ -50,11 +66,6 @@ router.put('/:id', (req, res) => {
             }
         })
     }
-})
-
-//Update user's bills
-router.put('/:id/bill/:id_bill', (req, res) => {
-
 })
 
 // Create user
