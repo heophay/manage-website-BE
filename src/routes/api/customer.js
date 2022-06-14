@@ -17,6 +17,28 @@ router.get('/',(req, res) => {
     })
 })
 
+//PUT
+router.put('/:id', (req, res) => {
+    const { id } = req.params
+    const data = req.body
+    try {
+        Customer.findOne({
+            $and: [
+                {
+                    phone: data.name,
+                }
+            ]
+        }, (err, customer) => {
+            if (err) throw err;
+            if (!customer) {
+                createUser(data)
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 //POST
 router.post('/create', (req, res) => {
     var data = req.body
@@ -25,8 +47,9 @@ router.post('/create', (req, res) => {
         res.json({
             status: 200,
             message: 'Created Customer',
-            product: newCustomer,
+            customer: newCustomer,
         })
     })
 })
+
 module.exports = router
