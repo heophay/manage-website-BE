@@ -12,6 +12,17 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/employee', (req, res) => {
+    User.find({
+        $and:[
+            {isAdmin: false}
+        ]
+    }, (err, user) => {
+        if (!err) res.json(user)
+        else res.status(400).json({error: 'ERROR!!'})
+    })
+})
+
 //Get 1 user
 router.get('/:id', (req, res) => {
     const { id } = req.params 
@@ -33,39 +44,20 @@ router.get('/:id', (req, res) => {
 router.put('/:id', (req, res) => {
     const { id } = req.params
     const data = req.body
-    if (data.bills) {
-        // Update bills' user
-        User.updateOne({
-            _id: id
-        }, {
-            $push: {bills: data.bills},
-        },(err, newBills) => {
-            try {
-                res.json({
-                    status: 200,
-                    message: "Add Bills",
-                    bills: newBills
-                })
-            } catch (err) {
-                console.log(err)
-            }
-        } )
-    } else {
-        // Update infomation user
-        User.updateOne({
-            _id: id
-        },data ,(err, user) => {
-            try {
-                res.json({
-                    status: 200,
-                    message: "Updated Information",
-                    user: user
-                })
-            } catch (err) {
-                console.log(err)
-            }
-        })
-    }
+    // Update infomation user
+    User.updateOne({
+        _id: id
+    },data ,(err, user) => {
+        try {
+            res.json({
+                status: 200,
+                message: "Updated Information",
+                user: user
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    })
 })
 
 // Create user

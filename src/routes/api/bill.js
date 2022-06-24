@@ -18,6 +18,27 @@ router.get('/',(req, res) => {
     })
 })
 
+router.get('/:id_user',(req, res) => {
+    const { id_user } = req.params
+    Bill.find({
+        $and: [
+            {
+                id_user: id_user
+            }           
+        ]
+    }, (err, bills) => {
+        try {
+            res.json({
+                status: 200,
+                bills: bills
+            })
+        } catch (err) {
+            console.log(err)
+        }
+        
+    })
+})
+
 //POST
 router.post('/create', (req, res) => {
     var data = req.body
