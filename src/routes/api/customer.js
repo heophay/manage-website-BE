@@ -17,6 +17,27 @@ router.get('/',(req, res) => {
     })
 })
 
+router.get('/:phone',(req, res) => {
+    const phone = req.params.phone
+    Customer.find({
+        phone: phone
+    }, (err, customers) => {
+        try {
+            if (customers) {
+                res.json({
+                    status: 200,
+                    customers: customers[0]
+                })
+            } else {
+                res.send('no data')
+            }         
+        } catch (err) {
+            console.log(err)
+        }
+        
+    })
+})
+
 //PUT
 router.put('/:id', (req, res) => {
     const { id } = req.params

@@ -92,4 +92,20 @@ router.post('/login', (req, res) => {
         })
     })
 })
+
+router.delete('/:id', (req, res) => {
+    let { id } = req.params
+    User.deleteOne({
+        _id: id
+    }, (err) => {
+        try {
+            res.json({
+                status: 200,
+                message: "Deleted"
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    })
+})
 module.exports = router;

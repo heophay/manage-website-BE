@@ -13,5 +13,5 @@ const PayitemSchema = new Schema({
     quantity: Number,
 })
 
-module.exports = mongoose.model('PayItem', PayitemSchema)
+module.exports = new mongoose.model('PayItem', PayitemSchema)
 
