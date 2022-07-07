@@ -4,45 +4,47 @@ const router = express.Router();
 
 //GET
 router.get('/',(req, res) => {
-    Customer.find({}, (err, customers) => {
-        try {
+    try {
+        Customer.find({}, (err, customers) => {
             res.json({
                 status: 200,
                 customers: customers
-            })
-        } catch (err) {
-            console.log(err)
-        }
-        
-    })
+            })     
+        })
+    } catch (err) {
+        console.log(err)
+    }
 })
 
 router.get('/:phone',(req, res) => {
-    const phone = req.params.phone
-    Customer.find({
-        phone: phone
-    }, (err, customers) => {
-        try {
-            if (customers) {
-                res.json({
-                    status: 200,
-                    customers: customers[0]
-                })
-            } else {
-                res.send('no data')
-            }         
-        } catch (err) {
-            console.log(err)
-        }
-        
-    })
+    try {
+        const phone = req.params.phone
+        Customer.find({
+            phone: phone
+        }, (err, customers) => {
+            try {
+                if (customers) {
+                    res.json({
+                        status: 200,
+                        customers: customers[0]
+                    })
+                } else {
+                    res.send('no data')
+                }         
+            } catch (err) {
+                console.log(err)
+            }     
+        })
+    } catch (err) {
+        console.log(err)
+    }
 })
 
 //PUT
 router.put('/:id', (req, res) => {
-    const { id } = req.params
-    const data = req.body
     try {
+        const { id } = req.params
+        const data = req.body
         Customer.findOne({
             $and: [
                 {
@@ -62,15 +64,19 @@ router.put('/:id', (req, res) => {
 
 //POST
 router.post('/create', (req, res) => {
-    var data = req.body
-    Customer.create(data, (err, newCustomer) => {
-        if (err) throw err;
-        res.json({
-            status: 200,
-            message: 'Created Customer',
-            customer: newCustomer,
+    try {
+        var data = req.body
+        Customer.create(data, (err, newCustomer) => {
+            if (err) throw err;
+            res.json({
+                status: 200,
+                message: 'Created Customer',
+                customer: newCustomer,
+            })
         })
-    })
+    } catch (err) {
+        console.log(err)
+    }
 })
 
 module.exports = router
